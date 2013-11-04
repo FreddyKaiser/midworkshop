@@ -1,0 +1,44 @@
+# Log files
+*.log
+*.log.txt
+
+# Test files and notes
+test.py
+notes.txt
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Packages #
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# PyCharm #
+.idea
+.idea/*.*
+.idea/dataSources.*
+.idea/encodings.xml
+.idea/misc.xml
+.idea/scopes
+.idea/vcs.xml
+.idea/inspectionProfiles
+.idea/modules.xml
+.idea/sqldialects.xml
+.idea/workspace.xml
+.idea/dictionaries
+.idea/midbilling.iml
+.idea/other.xml
+.idea/testrunner.xml
