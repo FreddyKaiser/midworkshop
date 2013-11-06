@@ -77,8 +77,8 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --he
      https://soap.mobileid.swisscom.com/soap/services/MSS_SignaturePort
 
 # Traces
-[ -f "$SOAP_REQ" ] && echo ">>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
-[ -f "$SOAP_REQ.res" ] && echo ">>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
+[ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
+[ -f "$SOAP_REQ.res" ] && echo "\n>>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
 
 # Cleanups
 [ -f "$SOAP_REQ" ] && rm $SOAP_REQ

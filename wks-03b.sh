@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Workshop script to invoke the signing service: asynchron polling
-# <msisdn> <MSSP_TransID>
+# <MSSP_TransID>
 
 PWD=$(dirname $0)				# Get the Path of the script
 
@@ -21,8 +21,7 @@ RANDOM=$$					# Seeds the random number generator from PID of script
 AP_INSTANT=$(date +%Y-%m-%dT%H:%M:%S%:z)	# Define instant and transaction id
 AP_TRANSID=AP.TEST.$((RANDOM%89999+10000)).$((RANDOM%8999+1000))
 SOAP_REQ=$(mktemp /tmp/_tmp.XXXXXX)		# SOAP Request goes here
-SEND_TO=$1					# To who
-SEND_TRANSID=$2                                 # Transaction ID
+SEND_TRANSID=$1                                 # Transaction ID
 TIMEOUT_REQ=80					# Timeout of the request itself
 TIMEOUT_CON=90					# Timeout of the connection to the server
 
@@ -55,8 +54,8 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --he
      https://soap.mobileid.swisscom.com/soap/services/MSS_StatusQueryPort
 
 # Traces
-[ -f "$SOAP_REQ" ] && echo ">>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
-[ -f "$SOAP_REQ.res" ] && echo ">>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
+[ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
+[ -f "$SOAP_REQ.res" ] && echo "\n>>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
 
 # Cleanups
 [ -f "$SOAP_REQ" ] && rm $SOAP_REQ
