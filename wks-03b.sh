@@ -15,8 +15,6 @@ CERT_KEY=$PWD/mycert.key			# The related key of the certificate
 CERT_CA=$PWD/swisscom-ca.crt                    # Bag file with the server/client issuing and root certifiates
 
 # Create temporary SOAP request
-#  Synchron with timeout
-#  Signature format in PKCS7
 RANDOM=$$					# Seeds the random number generator from PID of script
 AP_INSTANT=$(date +%Y-%m-%dT%H:%M:%S%:z)	# Define instant and transaction id
 AP_TRANSID=AP.TEST.$((RANDOM%89999+10000)).$((RANDOM%8999+1000))
@@ -49,7 +47,7 @@ End
 SOAP_ACTION=#MSS_StatusReq
 curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --header "SOAPAction: \"$SOAP_ACTION\"" \
      --cert $CERT_FILE --cacert $CERT_CA --key $CERT_KEY \
-     --output $SOAP_REQ.res --trace-ascii $SOAP_REQ.log \
+     --output $SOAP_REQ.res \
      --silent --connect-timeout $TIMEOUT_CON \
      https://soap.mobileid.swisscom.com/soap/services/MSS_StatusQueryPort
 
@@ -59,7 +57,6 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --he
 
 # Cleanups
 [ -f "$SOAP_REQ" ] && rm $SOAP_REQ
-[ -f "$SOAP_REQ.log" ] && rm $SOAP_REQ.log
 [ -f "$SOAP_REQ.res" ] && rm $SOAP_REQ.res
 
 #==========================================================
