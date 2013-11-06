@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop script to invoke the signing service: synchron
+# Workshop script to invoke the signing service: asynchron call
 # <msisdn> <message> <language>
 
 PWD=$(dirname $0)				# Get the Path of the script
@@ -15,7 +15,7 @@ CERT_KEY=$PWD/mycert.key			# The related key of the certificate
 CERT_CA=$PWD/swisscom-ca.crt                    # Bag file with the server/client issuing and root certifiates
 
 # Create temporary SOAP request
-#  Synchron with timeout
+#  Asynchron with timeout
 #  Signature format in PKCS7
 RANDOM=$$					# Seeds the random number generator from PID of script
 AP_INSTANT=$(date +%Y-%m-%dT%H:%M:%S%:z)	# Define instant and transaction id
@@ -37,7 +37,7 @@ cat > $SOAP_REQ <<End
     xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <MSS_Signature xmlns="">
-      <mss:MSS_SignatureReq MinorVersion="1" MajorVersion="1" xmlns:mss="http://uri.etsi.org/TS102204/v1.1.2#" MessagingMode="synch" TimeOut="$TIMEOUT_REQ" xmlns:fi="http://mss.ficom.fi/TS102204/v1.0.0#">
+      <mss:MSS_SignatureReq MinorVersion="1" MajorVersion="1" xmlns:mss="http://uri.etsi.org/TS102204/v1.1.2#" MessagingMode="asynchClientServer" TimeOut="$TIMEOUT_REQ" xmlns:fi="http://mss.ficom.fi/TS102204/v1.0.0#">
         <mss:AP_Info AP_PWD="$AP_PWD" AP_TransID="$AP_TRANSID" Instant="$AP_INSTANT" AP_ID="$AP_ID" />
         <mss:MSSP_Info>
           <mss:MSSP_ID>
@@ -78,7 +78,6 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --he
 
 # Traces
 [ -f "$SOAP_REQ" ] && echo ">>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
-[ -f "$SOAP_REQ.log" ] && echo ">>> $SOAP_REQ.log <<<" && cat $SOAP_REQ.log | grep '==\|error'
 [ -f "$SOAP_REQ.res" ] && echo ">>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
 
 # Cleanups
