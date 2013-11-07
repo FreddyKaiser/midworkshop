@@ -35,6 +35,7 @@ openssl smime -verify -inform DER -in $SOAP_REQ.sig.decoded -CAfile $CERT_CA -pu
 
 # Cleanups
 echo "\n"
+[ -f "$SOAP_REQ" ] && rm $SOAP_REQ
 [ -f "$SOAP_REQ.sig" ] && rm $SOAP_REQ.sig
 [ -f "$SOAP_REQ.sig.decoded" ] && rm $SOAP_REQ.sig.decoded
 [ -f "$SOAP_REQ.sig.cert" ] && rm $SOAP_REQ.sig.cert
