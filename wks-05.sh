@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Workshop script to decode the mss:MSS_Signature
+# Workshop script to decode the mss:MSS_Signature and display the MID user certificate
 # <mss:Base64Signature>
 
 PWD=$(dirname $0)				# Get the Path of the script
@@ -23,15 +23,7 @@ openssl pkcs7 -inform der -in $SOAP_REQ.sig.decoded -out $SOAP_REQ.sig.cert -pri
 
 # Display the subject of the signer certificate
 echo "\n>>> Signer certificate details <<<"
-openssl x509 -subject -serial -issuer -dates -pubkey -noout -in $SOAP_REQ.sig.cert
-
-# Verify the revocation status over ocsp
-echo "\n>>> Revocation checks over OCSP <<<"
-openssl ocsp -CAfile $CERT_CA -issuer $OCSP_CERT -nonce -url $OCSP_URL -cert $SOAP_REQ.sig.cert
-
-# Extract the PKCS7 and validate the signature
-echo "\n>>> Data to be signed <<<"
-openssl smime -verify -inform DER -in $SOAP_REQ.sig.decoded -CAfile $CERT_CA -purpose sslclient
+openssl x509 -text -in $SOAP_REQ.sig.cert
 
 # Cleanups
 echo "\n"
