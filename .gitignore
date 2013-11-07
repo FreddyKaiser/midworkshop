@@ -1,11 +1,3 @@
-# Log files
-*.log
-*.log.txt
-
-# Test files and notes
-test.py
-notes.txt
-
 # OS generated files #
 .DS_Store
 .DS_Store?
@@ -13,18 +5,7 @@ notes.txt
 .Spotlight-V100
 .Trashes
 Icon?
-ehthumbs.db
 Thumbs.db
-
-# Packages #
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
 
 # PyCharm #
 .idea
