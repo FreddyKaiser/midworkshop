@@ -24,7 +24,7 @@ SOAP_REQ=$(mktemp /tmp/_tmp.XXXXXX)		# SOAP Request goes here
 SEND_TO=$1					# To who
 SEND_MSG=$2					# What DataToBeSigned (DTBS)
 USERLANG=$3					# User language
-TIMEOUT_REQ=5					# Timeout of the request itself
+TIMEOUT_REQ=80					# Timeout of the request itself
 TIMEOUT_CON=10					# Timeout of the connection to the server
 
 cat > $SOAP_REQ <<End
@@ -77,8 +77,8 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --he
      https://soap.mobileid.swisscom.com/soap/services/MSS_SignaturePort
 
 # Traces
-[ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
-[ -f "$SOAP_REQ.res" ] && echo "\n>>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
+[ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmllint --format -
+[ -f "$SOAP_REQ.res" ] && echo "\n>>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmllint --format -
 
 # Cleanups
 [ -f "$SOAP_REQ" ] && rm $SOAP_REQ

@@ -1,8 +1,8 @@
 #!/bin/sh
-# mobileid-sign.sh - 2.0
+# mobileid-sign.sh - 2.1
 #
 # Generic script using wget to invoke Swisscom Mobile ID service.
-# Dependencies: curl, openssl, base64, sed, date, xmlindent
+# Dependencies: curl, openssl, base64, sed, date, xmllint
 #
 # Change Log:
 #  1.0 13.09.2012: Initial version with signature validation
@@ -22,6 +22,7 @@
 #  1.9 12.08.2013: Instant with timezone
 #  2.0 18.10.2013: Format the xml results in debug mode
 #                  Dependency checker
+#  2.1 13.11.2013: Switched from xmlindent to xmllint
 
 ######################################################################
 # User configurable options
@@ -75,10 +76,16 @@ PWD=$(dirname $0)				# Get the Path of the script
 TIME1=$(date +"%s")				# Get the start time
 
 # Check the dependencies
-for cmd in curl openssl base64 sed date xmlindent; do
+for cmd in curl openssl base64 sed date; do
   hash $cmd &> /dev/null
   if [ $? -eq 1 ]; then error "Dependency error: '$cmd' not found" ; fi
 done
+if [ "$DEBUG" = "1" ]; then
+  for cmd in xmllint; do
+    hash $cmd &> /dev/null
+    if [ $? -eq 1 ]; then error "Dependency error: '$cmd' not found" ; fi
+  done
+fi
 
 # Swisscom Mobile ID credentials
 CERT_FILE=$PWD/mycert.crt			# The certificate that is allowed to access the service
@@ -244,9 +251,9 @@ fi
 
 # Debug details
 if [ "$DEBUG" != "" ]; then
-  [ -f "$SOAP_REQ" ] && echo ">>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
+  [ -f "$SOAP_REQ" ] && echo ">>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmllint --format -
   [ -f "$SOAP_REQ.log" ] && echo ">>> $SOAP_REQ.log <<<" && cat $SOAP_REQ.log | grep '==\|error'
-  [ -f "$SOAP_REQ.res" ] && echo ">>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
+  [ -f "$SOAP_REQ.res" ] && echo ">>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmllint --format -
 fi
 
 # Need a receipt?

@@ -61,8 +61,8 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --he
      https://soap.mobileid.swisscom.com/soap/services/MSS_ReceiptPort
 
 # Traces
-[ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmlindent
-[ -f "$SOAP_REQ.res" ] && echo "\n>>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmlindent
+[ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmllint --format -
+[ -f "$SOAP_REQ.res" ] && echo "\n>>> $SOAP_REQ.res <<<" && cat $SOAP_REQ.res | xmllint --format -
 
 # Cleanups
 [ -f "$SOAP_REQ" ] && rm $SOAP_REQ
