@@ -20,8 +20,8 @@ AP_INSTANT=$(date +%Y-%m-%dT%H:%M:%S%:z)	# Define instant and transaction id
 AP_TRANSID=AP.TEST.$((RANDOM%89999+10000)).$((RANDOM%8999+1000))
 SOAP_REQ=$(mktemp /tmp/_tmp.XXXXXX)		# SOAP Request goes here
 SEND_TRANSID=$1                                 # Transaction ID
-TIMEOUT_REQ=80					# Timeout of the request itself
-TIMEOUT_CON=90					# Timeout of the connection to the server
+TIMEOUT_REQ=5					# Timeout of the request itself
+TIMEOUT_CON=10					# Timeout of the connection to the server
 
 cat > $SOAP_REQ <<End
 <?xml version="1.0" encoding="UTF-8"?>

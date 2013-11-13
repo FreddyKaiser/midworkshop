@@ -24,8 +24,8 @@ SOAP_REQ=$(mktemp /tmp/_tmp.XXXXXX)		# SOAP Request goes here
 SEND_TO=$1					# To who
 SEND_MSG=$2					# What DataToBeSigned (DTBS)
 USERLANG=$3					# User language
-TIMEOUT_REQ=80					# Timeout of the request itself
-TIMEOUT_CON=90					# Timeout of the connection to the server
+TIMEOUT_REQ=5					# Timeout of the request itself
+TIMEOUT_CON=10					# Timeout of the connection to the server
 
 cat > $SOAP_REQ <<End
 <?xml version="1.0" encoding="UTF-8"?>
