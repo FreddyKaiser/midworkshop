@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="MSS" targetNamespace="http://nevis.ch/esauth/wsdl/mss.wsdl" 
-	xmlns:tns="http://nevis.ch/esauth/wsdl/mss.wsdl" 
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MSS" targetNamespace="http://swisscom.com/esauth/wsdl/mss.wsdl" 
+	xmlns:tns="http://swisscom.com/esauth/wsdl/mss.wsdl" 
 	xmlns:apachesoap="http://xml.apache.org/xml-soap" 
 	xmlns:mss="http://uri.etsi.org/TS102204/v1.1.2#" 
     	xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" 
@@ -580,10 +580,10 @@
 				<xs:element name="AP_Info">
 					<xs:complexType>
 						<xs:attribute name="AP_ID" type="xs:anyURI" use="required"/>
+                        <xs:attribute name="AP_PWD" type="xs:string" use="required"/>
 						<xs:attribute name="AP_TransID" type="xs:NCName" use="required"/>
-						<xs:attribute name="AP_PWD" type="xs:string" use="required"/>
 						<xs:attribute name="Instant" type="xs:dateTime" use="required"/>
-						<xs:attribute name="AP_URL" type="xs:anyURI" use="optional"/>
+						<!--<xs:attribute name="AP_URL" type="xs:anyURI" use="optional"/>-->
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="MSSP_Info">
@@ -1528,6 +1528,12 @@
 		<wsdl:part name="MSS_ReceiptResp" type="mss:MSS_ReceiptRespType" />
 	</wsdl:message>
 
+	<wsdl:message name="MSS_ProfileInput">
+		<wsdl:part name="MSS_ProfileReq" type="mss:MSS_ProfileReqType" />
+	</wsdl:message>
+	<wsdl:message name="MSS_ProfileOutput">
+		<wsdl:part name="MSS_ProfileResp" type="mss:MSS_ProfileRespType" />
+	</wsdl:message>
 
 	<wsdl:message name="MSS_FaultMessage">
 		<wsdl:part name="MSS_Fault" element="soapenv:Fault">
@@ -1557,8 +1563,16 @@
 			<wsdl:fault message="tns:MSS_FaultMessage" name="FaultPart" />
 		</wsdl:operation>
 	</wsdl:portType>
+    
+    <wsdl:portType name="MSS_ProfileType">
+		<wsdl:operation name="MSS_ProfileQuery">
+			<wsdl:input message="tns:MSS_ProfileInput" />
+			<wsdl:output message="tns:MSS_ProfileOutput" />
+			<wsdl:fault message="tns:MSS_FaultMessage" name="FaultPart" />
+		</wsdl:operation>
+	</wsdl:portType>
 
-	<wsdl:binding name="MSS_SignaturePortSoapBinding" type="tns:MSS_SignaturePortType">
+	<wsdl:binding name="MSS_SignatureBinding" type="tns:MSS_SignaturePortType">
 		<wsoap12:binding style="rpc"
 			transport="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
 		<wsdl:operation name="MSS_Signature">
@@ -1576,7 +1590,7 @@
 		</wsdl:operation>
 	</wsdl:binding>
 
-	<wsdl:binding name="MSS_StatusQueryPortSoapBinding" type="tns:MSS_StatusQueryType">
+	<wsdl:binding name="MSS_StatusQueryBinding" type="tns:MSS_StatusQueryType">
 		<wsoap12:binding style="rpc"
 			transport="http://www.w3.org/2003/05/soap/bindings/HTTP/" />
 		<wsdl:operation name="MSS_StatusQuery">
@@ -1593,8 +1607,10 @@
 			</wsdl:fault>
 		</wsdl:operation>
 	</wsdl:binding>
+    
+    
 
-	<wsdl:binding name="MSS_ReceiptPortSoapBinding" type="tns:MSS_ReceiptType">
+	<wsdl:binding name="MSS_ReceiptBinding" type="tns:MSS_ReceiptType">
 		<wsoap12:binding style="rpc"
 			transport="http://schemas.xmlsoap.org/soap/http" />
 		<wsdl:operation name="MSS_Receipt">
@@ -1612,21 +1628,45 @@
 		</wsdl:operation>
 	</wsdl:binding>   
 
+	<wsdl:binding name="MSS_ProfileQueryBinding" type="tns:MSS_ProfileType">
+		<wsoap12:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="MSS_ProfileQuery">
+			<wsoap12:operation soapActionRequired="false"
+				style="rpc" />
+			<wsdl:input>
+				<wsoap12:body parts="MSS_ProfileReq" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<wsoap12:body parts="MSS_ProfileResp" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="FaultPart">
+				<wsoap12:fault parts="Fault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>   
+
 	<wsdl:service name="MSS_SignatureService">
-		<wsdl:port name="MSS_SignaturePort" binding="tns:MSS_SignaturePortSoapBinding">
-			<wsoap12:address location="https://127.0.0.1:8443" />
+		<wsdl:port name="MSS_SignaturePort" binding="tns:MSS_SignatureBinding">
+			<wsoap12:address location="https://soap.mobileid.swisscom.com/soap/services/MSS_SignaturePort" />
 		</wsdl:port>
 	</wsdl:service>
 
 	<wsdl:service name="MSS_StatusService">
-		<wsdl:port name="MSS_StatusQueryPort" binding="tns:MSS_StatusQueryPortSoapBinding">
-			<wsoap12:address location="https://127.0.0.1:8443" />
+		<wsdl:port name="MSS_StatusQueryPort" binding="tns:MSS_StatusQueryBinding">
+			<wsoap12:address location="https://soap.mobileid.swisscom.com/soap/services/StatusQueryPort" />
 		</wsdl:port>
 	</wsdl:service>
 
 	<wsdl:service name="MSS_ReceiptService">
-		<wsdl:port name="MSS_ReceiptPort" binding="tns:MSS_ReceiptPortSoapBinding">
-			<wsoap12:address location="https://127.0.0.1:8443" />
+		<wsdl:port name="MSS_ReceiptPort" binding="tns:MSS_ReceiptBinding">
+			<wsoap12:address location="https://soap.mobileid.swisscom.com/soap/services/MSS_ReceiptPort" />
+		</wsdl:port>
+	</wsdl:service>    
+
+	<wsdl:service name="MSS_ProfileService">
+		<wsdl:port name="MSS_ProfilePort" binding="tns:MSS_ProfileQueryBinding">
+			<wsoap12:address location="https://soap.mobileid.swisscom.com/soap/services/MSS_ProfilePort" />
 		</wsdl:port>
 	</wsdl:service>    
 
