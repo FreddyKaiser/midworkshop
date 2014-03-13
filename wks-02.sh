@@ -31,7 +31,7 @@ openssl ocsp -CAfile $CERT_CA -issuer $OCSP_CERT -nonce -url $OCSP_URL -cert $SO
 
 # Extract the PKCS7 and validate the signature
 echo "\n>>> Data to be signed <<<"
-openssl smime -verify -inform DER -in $SOAP_REQ.sig.decoded -CAfile $CERT_CA -purpose sslclient
+openssl cms -verify -inform DER -in $SOAP_REQ.sig.decoded -CAfile $CERT_CA -purpose sslclient
 
 # Cleanups
 echo "\n"
