@@ -50,8 +50,7 @@ cat > $SOAP_REQ <<End
 End
 
 # Call the service
-SOAP_ACTION=#MSS_ProfileQuery
-curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" --header "SOAPAction: \"$SOAP_ACTION\"" \
+curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" \
      --cert $CERT_FILE --cacert $CERT_CA --key $CERT_KEY \
      --output $SOAP_REQ.res --trace-ascii $SOAP_REQ.log \
      --silent --connect-timeout $TIMEOUT_CON \
