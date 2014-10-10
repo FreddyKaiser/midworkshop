@@ -57,7 +57,7 @@ curl --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" \
      --cert $CERT_FILE --cacert $CERT_CA --key $CERT_KEY \
      --output $SOAP_REQ.res \
      --silent --connect-timeout $TIMEOUT_CON \
-     https://soap.mobileid.swisscom.com/soap/services/MSS_ReceiptPort
+     https://mobileid.swisscom.com/soap/services/MSS_ReceiptPort
 
 # Traces
 [ -f "$SOAP_REQ" ] && echo "\n>>> $SOAP_REQ <<<" && cat $SOAP_REQ | xmllint --format -

@@ -136,7 +136,7 @@ End
 [ -r "${CERT_FILE}" ] || error "SSL certificate file ($CERT_FILE) missing or not readable"
 
 # Call the service
-SOAP_URL=https://soap.mobileid.swisscom.com/soap/services/MSS_ReceiptPort
+SOAP_URL=https://mobileid.swisscom.com/soap/services/MSS_ReceiptPort
 CURL_OPTIONS="--silent"
 http_code=$(curl --write-out '%{http_code}\n' $CURL_OPTIONS \
     --data "@${SOAP_REQ}" --header "Content-Type: text/xml; charset=utf-8" \
