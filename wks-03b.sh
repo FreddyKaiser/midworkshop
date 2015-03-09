@@ -1,41 +1,41 @@
 #!/bin/sh
 #
-# Workshop script to invoke the signing service: asynchron polling
-# <MSSP_TransID>
+# Workshop script to invoke the signing service: polling
+# Parameters are <MSSP_TransID>
 
-PWD=$(dirname $0)				# Get the Path of the script
+PWD=$(dirname $0)				      # Get the Path of the script
 
-# Swisscom Mobile ID credentials
-AP_ID=mid://dev.swisscom.ch                     # AP ID
-AP_PWD=disabled					# AP Password must be present but is not validated
+AP_ID=mid://dev.swisscom.ch   # AP ID
+AP_PWD=disabled					      # AP Password must be present but is not validated
 CERT_FILE=$PWD/mycert.crt			# The certificate that is allowed to access the service
 CERT_KEY=$PWD/mycert.key			# The related key of the certificate
+CERT_CA=$PWD/mobileid-ca-ssl.crt  # Bag file with the server/client issuing and root certifiates
 
-# Swisscom SDCS elements
-CERT_CA=$PWD/swisscom-ca.crt                    # Bag file with the server/client issuing and root certifiates
+SEND_TRANSID=$1               # MSSP Transaction ID
+TIMEOUT_CON=10			        	# Timeout of the connection to the server
 
-# Create temporary SOAP request
-RANDOM=$$					# Seeds the random number generator from PID of script
-AP_INSTANT=$(date +%Y-%m-%dT%H:%M:%S%:z)	# Define instant and transaction id
+# Define instant and transaction id
+RANDOM=$$                     # Seeds the random number generator from PID of script
+AP_INSTANT=$(date +%Y-%m-%dT%H:%M:%S%:z)	
 AP_TRANSID=AP.TEST.$((RANDOM%89999+10000)).$((RANDOM%8999+1000))
-SOAP_REQ=$(mktemp /tmp/_tmp.XXXXXX)		# SOAP Request goes here
-SEND_TRANSID=$1                                 # Transaction ID
-TIMEOUT_REQ=5					# Timeout of the request itself
-TIMEOUT_CON=10					# Timeout of the connection to the server
+
+# SOAP Request goes here
+SOAP_REQ=$(mktemp /tmp/_tmp.XXXXXX)		    
 
 cat > $SOAP_REQ <<End
-<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
+    xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:mss="http://uri.etsi.org/TS102204/v1.1.2#">
   <soapenv:Body>
     <MSS_StatusQuery>
-      <mss:MSS_StatusReq MinorVersion="1" MajorVersion="1" MSSP_TransID="$SEND_TRANSID" TimeOut="$TIMEOUT_REQ" xmlns:mss="http://uri.etsi.org/TS102204/v1.1.2#" xmlns:fi="http://mss.ficom.fi/TS102204/v1.0.0#">
+      <mss:MSS_StatusReq MinorVersion="1" MajorVersion="1" MSSP_TransID="$SEND_TRANSID">
         <mss:AP_Info AP_ID="$AP_ID" AP_TransID="$AP_TRANSID" AP_PWD="$AP_PWD" Instant="$AP_INSTANT"/>
             <mss:MSSP_Info>
                <mss:MSSP_ID>
-                 <mss:URI>http://mid.swisscom.ch/</mss:URI> </mss:MSSP_ID>
+                 <mss:URI>http://mid.swisscom.ch/</mss:URI>
+               </mss:MSSP_ID>
             </mss:MSSP_Info>
          </mss:MSS_StatusReq>
       </MSS_StatusQuery>
