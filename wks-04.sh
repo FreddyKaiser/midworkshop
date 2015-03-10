@@ -15,7 +15,7 @@ SEND_TO=$1				          	# Destination number
 MSSP_TRANSID=$2					      # Transaction ID of request
 MSG_TXT=$3                    # Define the message
 USERLANG=$4					        	# Message language
-TIMEOUT_CON=10			        	# Timeout of the connection to the server
+TIMEOUT_CON=90			        	# Timeout of the connection to the server
 
 # Define instant and transaction id
 RANDOM=$$                     # Seeds the random number generator from PID of script
