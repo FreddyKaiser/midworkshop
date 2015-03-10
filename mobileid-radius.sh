@@ -90,9 +90,9 @@ UNIQUEID=`eval echo $X_MSS_MOBILEID_SN`
 [ "$UNIQUEID" = "" ] && UNIQUEID=$3
 
 # Read configuration from property file
-FILE="$PWD/exec-mobileid.properties"
+FILE="$PWD/mobileid-radius.properties"
 [ -r "$FILE" ] || error "Properties file ($FILE) missing or not readable"
-. $PWD/exec-mobileid.properties
+. $PWD/mobileid-radius.properties
 
 # Read dictionary / resources
 USERLANG=$(echo $USERLANG | tr '[:upper:]' '[:lower:]')
