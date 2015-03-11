@@ -50,7 +50,7 @@ cat > $SOAP_REQ <<End
           <mss:StatusCode Value="100"/>
             <mss:StatusDetail>
               <sco:ReceiptRequestExtension ReceiptMessagingMode="synch" UserAck="true">
-                <sco:ReceiptProfile Language="'$USERLANG'">
+                <sco:ReceiptProfile Language="$USERLANG">
                   <sco:ReceiptProfileURI>http://mss.swisscom.ch/synch</sco:ReceiptProfileURI>
                 </sco:ReceiptProfile>
               </sco:ReceiptRequestExtension>
