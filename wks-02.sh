@@ -20,7 +20,8 @@ echo $SIGNATURE > $SOAP_REQ.sig
 # Swisscom SDCS elements
 CERT_CA=$PWD/mobileid-ca-signature.crt  # Bag file with the server/client issuing and root certifiates
 OCSP_CERT=$PWD/swisscom-ocsp.crt		    # OCSP information of the signers certificate
-OCSP_URL=http://ocsp.swissdigicert.ch/sdcs-rubin2
+#OCSP_URL=http://ocsp.swissdigicert.ch/sdcs-rubin2
+OCSP_URL=http://ocsp.swissdigicert.ch/sdcs-rubin3
 
 # Decode the signature and extract the certificate
 base64 --decode  $SOAP_REQ.sig > $SOAP_REQ.sig.decoded
